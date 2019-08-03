@@ -9,9 +9,17 @@ const FileList = props => {
     <div>
       <h3>{numDocuments} documents</h3>
       {props.files &&
-        props.files.map((file, i) => (
-          <File name={file.name} size={file.size} key={i} />
-        ))}
+        props.files.map((file, i) => {
+          return (
+            <File
+              name={file.name}
+              size={file.size}
+              key={file.id}
+              id={file.id}
+              onFileDelete={props.onFileDelete}
+            />
+          );
+        })}
       ok<p>ok</p>
     </div>
   );
@@ -21,7 +29,7 @@ FileList.propTypes = {
   files: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      size: PropTypes.string.isRequired,
+      size: PropTypes.number.isRequired,
     }),
   ),
   onDelete: PropTypes.func,

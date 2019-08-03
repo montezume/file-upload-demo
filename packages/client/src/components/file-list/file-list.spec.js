@@ -10,7 +10,7 @@ describe("FileUpload", () => {
     });
   });
   describe("when files provided", () => {
-    const files = [{ name: "foo.jpg", size: "100kb" }];
+    const files = [{ name: "foo.jpg", size: 10000, id: 1 }];
     it("should show number of documents", () => {
       const { getByText } = render(<FileList files={files} />);
       expect(getByText("1 documents")).toBeInTheDocument();
@@ -18,7 +18,7 @@ describe("FileUpload", () => {
     it("should show file cards", () => {
       const { getByText } = render(<FileList files={files} />);
       expect(getByText("foo.jpg")).toBeInTheDocument();
-      expect(getByText("100kb")).toBeInTheDocument();
+      expect(getByText("10000")).toBeInTheDocument();
     });
   });
 });

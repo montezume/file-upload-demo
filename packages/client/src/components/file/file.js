@@ -9,18 +9,28 @@ const Wrapper = styled.div`
 `;
 
 const File = props => {
+  const { id, onFileDelete } = props;
+
+  const handleDelete = React.useCallback(
+    () => {
+      onFileDelete(id);
+    },
+    [id, onFileDelete],
+  );
+
   return (
     <Wrapper>
       <p>{props.name}</p>
       <p>{props.size}</p>
-      <button>Delete</button>
+      <button onClick={handleDelete}>Delete</button>
     </Wrapper>
   );
 };
 
 File.propTypes = {
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
 };
 
 export default File;

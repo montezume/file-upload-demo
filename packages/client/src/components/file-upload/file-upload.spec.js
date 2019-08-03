@@ -31,7 +31,7 @@ describe("FileUpload", () => {
     it("should update the value when changing the value", async () => {
       const onFileSelected = jest.fn();
       const onError = jest.fn();
-      const { container } = render(
+      const { getByLabelText } = render(
         <FileUpload onFileSelected={onFileSelected} onError={onError} />,
       );
       const event = {
@@ -39,7 +39,7 @@ describe("FileUpload", () => {
           files: [createTestFile()],
         },
       };
-      await fireEvent.change(container.querySelector("input"), event);
+      await fireEvent.change(getByLabelText("Upload"), event);
 
       expect(onError).not.toHaveBeenCalled();
       expect(onFileSelected).toHaveBeenCalledWith(
@@ -58,13 +58,13 @@ describe("FileUpload", () => {
         const file = createTestFile({ size: largeFileSize });
         const onFileSelected = jest.fn();
         const onError = jest.fn();
-        const { container } = render(
+        const { getByLabelText } = render(
           <FileUpload onFileSelected={onFileSelected} onError={onError} />,
         );
         const event = {
           target: { files: [file] },
         };
-        await fireEvent.change(container.querySelector("input"), event);
+        await fireEvent.change(getByLabelText("Upload"), event);
         expect(onFileSelected).not.toHaveBeenCalled();
         expect(onError).toHaveBeenCalledWith(
           expect.objectContaining({ size: true }),
@@ -80,13 +80,13 @@ describe("FileUpload", () => {
         const file = createTestFile({ type: "application/pdf" });
         const onFileSelected = jest.fn();
         const onError = jest.fn();
-        const { container } = render(
+        const { getByLabelText } = render(
           <FileUpload onFileSelected={onFileSelected} onError={onError} />,
         );
         const event = {
           target: { files: [file] },
         };
-        await fireEvent.change(container.querySelector("input"), event);
+        await fireEvent.change(getByLabelText("Upload"), event);
         expect(onFileSelected).not.toHaveBeenCalled();
         expect(onError).toHaveBeenCalledWith(
           expect.objectContaining({ format: true }),
@@ -105,13 +105,13 @@ describe("FileUpload", () => {
         });
         const onFileSelected = jest.fn();
         const onError = jest.fn(() => {});
-        const { container } = render(
+        const { getByLabelText } = render(
           <FileUpload onFileSelected={onFileSelected} onError={onError} />,
         );
         const event = {
           target: { files: [file] },
         };
-        await fireEvent.change(container.querySelector("input"), event);
+        await fireEvent.change(getByLabelText("Upload"), event);
         expect(onFileSelected).not.toHaveBeenCalled();
         expect(onError).toHaveBeenCalledWith(
           expect.objectContaining({ format: true }),
