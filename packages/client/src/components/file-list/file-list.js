@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
+import { useStateValue } from "../../state";
 import File from "../file";
 
 const FileContainer = styled.div`
@@ -16,14 +17,15 @@ const Item = styled.div`
 `;
 
 const FileList = props => {
-  const numDocuments = (props.files && props.files.length) || 0;
+  const [{ files }, dispatch] = useStateValue();
+  const numDocuments = files.length || 0;
 
   return (
     <div>
       <h3>{numDocuments} documents</h3>
       <FileContainer>
-        {props.files &&
-          props.files.map((file, i) => {
+        {files &&
+          files.map((file, i) => {
             return (
               <Item key={file.id}>
                 <File

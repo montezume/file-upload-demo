@@ -6,92 +6,12 @@ import Search from "./components/search";
 import FileUpload from "./components/file-upload";
 import FileList from "./components/file-list";
 import AppWrapper from "./components/app-wrapper";
+import { useStateValue } from "./state";
 import theme from "./theme";
 import { create, list, remove } from "./fakeApi";
 
-const initialState = { files: [], isLoading: false, searchTerm: "" };
-const reducer = (state, action) => {
-  console.log("here", action);
-  switch (action.type) {
-    case "SET_SEARCH_TERM": {
-      return {
-        ...state,
-        searchTerm: action.payload,
-      };
-    }
-
-    case "CREATE_FILE": {
-      return {
-        ...state,
-        isLoading: true,
-      };
-    }
-
-    case "CREATE_FILE_SUCCESS": {
-      return {
-        ...state,
-        isLoading: false,
-        files: state.files.concat(action.payload),
-      };
-    }
-    case "CREATE_FILE_ERROR": {
-      return {
-        ...state,
-        isLoading: false,
-      };
-    }
-
-    case "DELETE_FILE": {
-      return {
-        ...state,
-        isLoading: true,
-      };
-    }
-
-    case "DELETE_FILE_SUCCESS": {
-      return {
-        ...state,
-        files: state.files.filter(file => file.id !== action.payload),
-        isLoading: false,
-      };
-    }
-    case "DELETE_FILE_ERROR": {
-      return {
-        ...state,
-        isLoading: false,
-      };
-    }
-
-    case "LOAD_FILES": {
-      return {
-        ...state,
-        isLoading: true,
-      };
-    }
-
-    case "LOAD_FILES_SUCCESS": {
-      return {
-        ...state,
-        isLoading: false,
-        files: action.payload,
-      };
-    }
-
-    case "LOAD_FILES_ERROR": {
-      return {
-        ...state,
-        isLoading: false,
-        files: [],
-      };
-    }
-
-    default:
-      return state;
-  }
-};
-
 const App = () => {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = useStateValue();
 
   const fetchData = React.useCallback(
     async () => {
@@ -104,7 +24,7 @@ const App = () => {
         dispatch({ type: "LOAD_FILES_ERROR" });
       }
     },
-    [state.searchTerm],
+    [dispatch, state.searchTerm],
   );
 
   const onSearchTermChange = React.useCallback(
@@ -112,7 +32,7 @@ const App = () => {
       dispatch({ type: "SET_SEARCH_TERM", payload: searchTerm });
       fetchData();
     },
-    [fetchData],
+    [dispatch, fetchData],
   );
 
   const onFileSelected = React.useCallback(
@@ -129,15 +49,18 @@ const App = () => {
     [dispatch],
   );
 
-  const onFileDelete = React.useCallback(async id => {
-    dispatch({ type: "DELETE_FILE" });
-    try {
-      await remove(id);
-      dispatch({ type: "DELETE_FILE_SUCCESS", payload: id });
-    } catch (e) {
-      dispatch({ type: "DELETE_FILE_ERROR" });
-    }
-  }, []);
+  const onFileDelete = React.useCallback(
+    async id => {
+      dispatch({ type: "DELETE_FILE" });
+      try {
+        await remove(id);
+        dispatch({ type: "DELETE_FILE_SUCCESS", payload: id });
+      } catch (e) {
+        dispatch({ type: "DELETE_FILE_ERROR" });
+      }
+    },
+    [dispatch],
+  );
 
   // runs on mount
   React.useEffect(
@@ -167,7 +90,7 @@ const App = () => {
           />
           <FileUpload onFileSelected={onFileSelected} />
         </div>
-        <FileList files={state.files} onFileDelete={onFileDelete} />
+        <FileList onFileDelete={onFileDelete} />
       </AppWrapper>
     </ThemeProvider>
   );
