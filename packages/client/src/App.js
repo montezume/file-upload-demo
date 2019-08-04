@@ -11,6 +11,16 @@ import ErrorMessage from "./components/error-message";
 import { useStateValue } from "./state";
 import theme from "./theme";
 
+export const instance = axios.create({
+  headers: {
+    "content-security-policy": "script-src 'self'",
+    "x-xss-protection": "1; mode=block",
+    "X-Content-Type-Options": "nosniff",
+  },
+});
+
+export const baseURL = "http://localhost:3001";
+
 const App = () => {
   const [state, dispatch] = useStateValue();
 
@@ -20,8 +30,8 @@ const App = () => {
 
       try {
         const queryParam = state.searchTerm ? `?q=${state.searchTerm}` : "";
-        const response = await axios.get(
-          `http://localhost:3001/documents${queryParam}`,
+        const response = await instance.get(
+          `${baseURL}/documents${queryParam}`,
         );
         dispatch({ type: "LOAD_FILES_SUCCESS", payload: response.data });
       } catch (e) {
@@ -42,10 +52,7 @@ const App = () => {
     async data => {
       dispatch({ type: "CREATE_FILE" });
       try {
-        const response = await axios.post(
-          "http://localhost:3001/documents",
-          data,
-        );
+        const response = await instance.post(`${baseURL}/documents`, data);
         const content = response.data;
         dispatch({ type: "CREATE_FILE_SUCCESS", payload: content });
       } catch (e) {
@@ -66,7 +73,7 @@ const App = () => {
     async id => {
       dispatch({ type: "DELETE_FILE" });
       try {
-        await axios.delete(`http://localhost:3001/documents/${id}`);
+        await instance.delete(`${baseURL}/documents/${id}`);
         dispatch({ type: "DELETE_FILE_SUCCESS", payload: id });
       } catch (e) {
         dispatch({ type: "DELETE_FILE_ERROR" });

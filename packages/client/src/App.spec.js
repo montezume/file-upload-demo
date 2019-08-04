@@ -1,8 +1,7 @@
 import React from "react";
 import moxios from "moxios";
 import { render, waitForElement } from "./test-utils";
-import App from "./App";
-
+import App, { instance } from "./App";
 const createDocument = custom => ({
   name: "mock-image.png",
   size: 3805,
@@ -16,11 +15,11 @@ const createDocument = custom => ({
 // we mock as little as possible (only API calls)
 describe("App", () => {
   beforeEach(function() {
-    moxios.install();
+    moxios.install(instance);
   });
 
   afterEach(function() {
-    moxios.uninstall();
+    moxios.uninstall(instance);
   });
 
   describe("rendering", () => {

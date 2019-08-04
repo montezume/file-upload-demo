@@ -21,6 +21,8 @@ The second way is to use a `FileReader`, and read the bytes themselves. The firs
 
 XSS -> if a user uploads a file with a `name` that contains malicious JavaScript code, it won't run on the browser, due to React's safe parsing of the children property. See [here](https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412) for more info.
 
+Some basic security headers have been added including `content-security-policy` and `x-xss-protection`
+
 ### Not addressed.
 
 CSRF => In order to prevent our API from being hit by bad actors, we should send a token with every request. This will prevent other sites from communicating with our API.
@@ -70,7 +72,7 @@ This returns an array of all available documents. You can also search as follows
 What it does: deletes a document.
 What it returns: empty object
 
-#### POST /document
+### POST /document
 
 What it does: creates a document.
 What it accepts: JSON representation of the document.
