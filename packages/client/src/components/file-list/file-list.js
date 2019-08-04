@@ -1,6 +1,17 @@
 import React from "react";
+import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 import File from "../file";
+
+const FileContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const Item = styled.div`
+  width: 33%;
+  // 100% for small screen.
+`;
 
 const FileList = props => {
   const numDocuments = (props.files && props.files.length) || 0;
@@ -8,19 +19,21 @@ const FileList = props => {
   return (
     <div>
       <h3>{numDocuments} documents</h3>
-      {props.files &&
-        props.files.map((file, i) => {
-          return (
-            <File
-              name={file.name}
-              size={file.size}
-              key={file.id}
-              id={file.id}
-              onFileDelete={props.onFileDelete}
-            />
-          );
-        })}
-      ok<p>ok</p>
+      <FileContainer>
+        {props.files &&
+          props.files.map((file, i) => {
+            return (
+              <Item key={file.id}>
+                <File
+                  name={file.name}
+                  size={file.size}
+                  id={file.id}
+                  onFileDelete={props.onFileDelete}
+                />
+              </Item>
+            );
+          })}
+      </FileContainer>
     </div>
   );
 };

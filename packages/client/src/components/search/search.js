@@ -13,9 +13,7 @@ const Search = props => {
 
   React.useEffect(
     () => {
-      if (debouncedValue) {
-        if (onDebouncedValueChange) onDebouncedValueChange(debouncedValue);
-      }
+      if (onDebouncedValueChange) onDebouncedValueChange(debouncedValue);
     },
     [debouncedValue, onDebouncedValueChange],
   );

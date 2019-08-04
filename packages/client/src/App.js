@@ -7,29 +7,83 @@ import FileUpload from "./components/file-upload";
 import FileList from "./components/file-list";
 import AppWrapper from "./components/app-wrapper";
 import theme from "./theme";
+import { create, list, remove } from "./fakeApi";
 
-const createFileFactory = () => {
-  let id = 1;
-  return file => ({
-    id: id++,
-    ...file,
-  });
-};
-
-const createFile = createFileFactory();
-
-const initialState = { files: [] };
+const initialState = { files: [], isLoading: false, searchTerm: "" };
 const reducer = (state, action) => {
   switch (action.type) {
-    case "add": {
-      return { ...state, files: state.files.concat(action.payload) };
+    case "SET_SEARCH_TERM": {
+      return {
+        ...state,
+        searchTerm: action.payload,
+      };
     }
-    case "delete": {
+
+    case "CREATE_FILE": {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+
+    case "CREATE_FILE_SUCCESS": {
+      return {
+        ...state,
+        isLoading: false,
+        files: state.files.concat(action.payload),
+      };
+    }
+    case "CREATE_FILE_ERROR": {
+      return {
+        ...state,
+        isLoading: false,
+      };
+    }
+
+    case "DELETE_FILE": {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+
+    case "DELETE_FILE_SUCCESS": {
       return {
         ...state,
         files: state.files.filter(file => file.id !== action.payload),
+        isLoading: false,
       };
     }
+    case "DELETE_FILE_ERROR": {
+      return {
+        ...state,
+        isLoading: false,
+      };
+    }
+
+    case "LOAD_FILES": {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+
+    case "LOAD_FILES_SUCCESS": {
+      return {
+        ...state,
+        isLoading: false,
+        files: action.payload,
+      };
+    }
+
+    case "LOAD_FILES_ERROR": {
+      return {
+        ...state,
+        isLoading: false,
+        files: [],
+      };
+    }
+
     default:
       return state;
   }
@@ -38,26 +92,67 @@ const reducer = (state, action) => {
 const App = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
+  const fetchData = React.useCallback(
+    async () => {
+      dispatch({ type: "LOAD_FILES" });
+
+      try {
+        const result = await list(state.searchTerm);
+        dispatch({ type: "LOAD_FILES_SUCCESS", payload: result });
+      } catch (e) {
+        dispatch({ type: "LOAD_FILES_ERROR" });
+      }
+    },
+    [state.searchTerm],
+  );
+
+  const onSearchTermChange = React.useCallback(
+    async searchTerm => {
+      dispatch({ type: "SET_SEARCH_TERM", payload: searchTerm });
+      fetchData();
+    },
+    [fetchData],
+  );
+
   const onFileSelected = React.useCallback(
-    file => {
-      const newFile = createFile(file);
-      dispatch({ type: "add", payload: newFile });
+    async data => {
+      dispatch({ type: "CREATE_FILE" });
+      try {
+        const file = await create(data);
+        dispatch({ type: "CREATE_FILE_SUCCESS", payload: file });
+      } catch (e) {
+        dispatch({ type: "CREATE_FILE_ERROR" });
+      }
     },
     [dispatch],
   );
 
-  const onFileDelete = React.useCallback(
-    id => {
-      dispatch({ type: "delete", payload: id });
+  const onFileDelete = React.useCallback(async id => {
+    dispatch({ type: "DELETE_FILE" });
+    try {
+      await remove(id);
+      dispatch({ type: "DELETE_FILE_SUCCESS", payload: id });
+    } catch (e) {
+      dispatch({ type: "DELETE_FILE_ERROR" });
+    }
+  }, []);
+
+  // runs on mount
+  React.useEffect(
+    () => {
+      fetchData();
     },
-    [dispatch],
+    [dispatch, fetchData, state.searchTerm],
   );
 
   return (
     <ThemeProvider theme={theme}>
       <AppWrapper>
         <div>Hello World</div>
-        <Search placeholder="Search documents" />
+        <Search
+          placeholder="Search documents"
+          onDebouncedValueChange={onSearchTermChange}
+        />
         <div
           css={css`
             margin-top: 1em;

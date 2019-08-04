@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
 const Wrapper = styled.div`
-  width: 100%;
   border: 1px solid black;
   padding: 4px 8px;
 `;
