@@ -20,6 +20,8 @@ const createTestFile = custom => ({
   ...custom,
 });
 
+URL.createObjectURL = value => value;
+
 describe("FileUpload", () => {
   beforeEach(() => {
     processFileAndGetMimetype.mockImplementation(() => "image/jpeg");

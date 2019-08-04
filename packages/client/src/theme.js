@@ -9,6 +9,8 @@ const theme = {
   spacingXs: "4px",
   spacingS: "8px",
   spacingM: "16px",
+  // breakpoints
+  breakpointDesktop: "960px",
 };
 
 export default theme;

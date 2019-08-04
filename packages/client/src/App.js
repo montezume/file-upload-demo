@@ -11,6 +11,7 @@ import { create, list, remove } from "./fakeApi";
 
 const initialState = { files: [], isLoading: false, searchTerm: "" };
 const reducer = (state, action) => {
+  console.log("here", action);
   switch (action.type) {
     case "SET_SEARCH_TERM": {
       return {
@@ -116,6 +117,7 @@ const App = () => {
 
   const onFileSelected = React.useCallback(
     async data => {
+      console.log("here on fileSelected", data);
       dispatch({ type: "CREATE_FILE" });
       try {
         const file = await create(data);
@@ -148,17 +150,21 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <AppWrapper>
-        <div>Hello World</div>
-        <Search
-          placeholder="Search documents"
-          onDebouncedValueChange={onSearchTermChange}
-        />
         <div
-          css={css`
-            margin-top: 1em;
-            width: 200px;
+          css={customTheme => css`
+            display: flex;
+            flex-direction: column;
+
+            @media (min-width: ${customTheme.breakpointDesktop}) {
+              flex-direction: row;
+              margin: 0 ${customTheme.spacingS};
+            }
           `}
         >
+          <Search
+            placeholder="Search documents"
+            onDebouncedValueChange={onSearchTermChange}
+          />
           <FileUpload onFileSelected={onFileSelected} />
         </div>
         <FileList files={state.files} onFileDelete={onFileDelete} />

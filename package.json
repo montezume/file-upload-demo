@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "yarn --cwd packages/client start",
+    "test": "yarn --cwd packages/client test"
   },
   "private": true,
   "workspaces": [

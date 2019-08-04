@@ -26,9 +26,11 @@ const bytesToMb = bytes => {
 
 const FileUpload = props => {
   const { onFileSelected, onError } = props;
+  const [value, setValue] = React.useState("");
 
   const onChange = React.useCallback(
     async event => {
+      setValue(event.target.value);
       const newFile = event.target.files[0];
       const mimetype = await processFileAndGetMimetype(newFile);
 
@@ -49,13 +51,20 @@ const FileUpload = props => {
         };
 
         if (onFileSelected) onFileSelected(file);
+        setValue("");
       }
     },
     [onError, onFileSelected],
   );
 
   return (
-    <FileUploadInput type="file" name="file" id="file" onChange={onChange} />
+    <FileUploadInput
+      type="file"
+      name="file"
+      id="file"
+      value={value}
+      onChange={onChange}
+    />
   );
 };
 

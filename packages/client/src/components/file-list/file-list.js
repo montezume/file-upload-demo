@@ -9,8 +9,10 @@ const FileContainer = styled.div`
 `;
 
 const Item = styled.div`
-  width: 33%;
-  // 100% for small screen.
+  width: 100%;
+  @media (min-width: ${props => props.theme.breakpointDesktop}) {
+    width: 33%;
+  }
 `;
 
 const FileList = props => {
