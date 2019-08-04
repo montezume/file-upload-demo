@@ -47,7 +47,6 @@ const FileUpload = props => {
           name: newFile.name,
           size: newFile.size,
           type: newFile.type,
-          blob: URL.createObjectURL(newFile),
         };
 
         if (onFileSelected) onFileSelected(file);

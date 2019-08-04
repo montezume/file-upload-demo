@@ -7,6 +7,7 @@ import Search from "./components/search";
 import FileUpload from "./components/file-upload";
 import FileList from "./components/file-list";
 import AppWrapper from "./components/app-wrapper";
+import ErrorMessage from "./components/error-message";
 import { useStateValue } from "./state";
 import theme from "./theme";
 
@@ -119,14 +120,20 @@ const App = () => {
             </div>
           </div>
           {state.hasFileDeletionError && (
-            <div>Error deleting file. Please try again.</div>
+            <ErrorMessage>Error deleting file. Please try again.</ErrorMessage>
           )}
-
           {state.hasFileUploadError && (
-            <div>Error uploading file. Please try again.</div>
+            <ErrorMessage>Error uploading file. Please try again.</ErrorMessage>
           )}
 
-          <FileList onFileDelete={onFileDelete} />
+          {state.hasFileLoadingError && (
+            <ErrorMessage>
+              Error loading files. Please refresh the page and try again
+            </ErrorMessage>
+          )}
+          {!state.hasFileLoadingError && (
+            <FileList onFileDelete={onFileDelete} />
+          )}
         </div>
       </AppWrapper>
     </ThemeProvider>

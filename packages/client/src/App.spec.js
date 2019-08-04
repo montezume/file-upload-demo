@@ -35,13 +35,13 @@ describe("App", () => {
         expect(getByText("Loading ...")).toBeInTheDocument();
 
         // when moxios resolves, we should get the results
-        await waitForElement(() => getByText("0 documents"));
-
-        expect(
+        const errorMessage = await waitForElement(() =>
           getByText(
             "Error loading files. Please refresh the page and try again",
           ),
-        ).toBeInTheDocument();
+        );
+
+        expect(errorMessage).toBeInTheDocument();
       });
     });
     describe("when no files have been uploaded yet", () => {

@@ -5,6 +5,7 @@ const theme = {
   // colors
   colorSolid: "black",
   colorSurface: "white",
+  colorError: "red",
   // spacings
   spacingXs: "4px",
   spacingS: "8px",

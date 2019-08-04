@@ -7,14 +7,14 @@ const Button = styled.button`
   border: 1px solid ${props => props.theme.colorSolid};
   color: ${props => props.theme.colorSolid};
   padding: ${props => props.theme.spacingXs} ${props => props.theme.spacingS};
-  font-size: 1 rem;
+  font-size: 1rem;
   cursor: pointer;
 `;
 
 const Wrapper = styled.div`
-  border: 1px solid black;
-  padding: 4px 8px;
-  margin: 4px 0;
+  border: 1px solid ${props => props.theme.colorSolid};
+  padding: ${props => props.theme.spacingXs} ${props => props.theme.spacingS};
+  margin: 4 ${props => props.theme.spacingXs} 0;
   display: flex;
 
   @media (min-width: ${props => props.theme.breakpointDesktop}) {

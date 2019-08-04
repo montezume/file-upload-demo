@@ -11,8 +11,8 @@ const StyledInput = styled.input`
 `;
 
 const Label = styled.label`
-  border: 1px solid black;
-  padding: 4px 8px;
+  border: 1px solid ${props => props.theme.colorSolid};
+  padding: ${props => props.theme.spacingXs} ${props => props.theme.spacingS};
   display: block;
   border-radius: ${props => props.theme.borderRadius};
   text-align: center;
