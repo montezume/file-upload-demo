@@ -24,6 +24,26 @@ describe("App", () => {
   });
 
   describe("rendering", () => {
+    describe("where there is an error loading files", () => {
+      it("should show error", async () => {
+        moxios.stubRequest("http://localhost:3001/documents", {
+          status: 404,
+        });
+
+        const { getByText } = await render(<App />);
+        // when first rendered, it should show loader
+        expect(getByText("Loading ...")).toBeInTheDocument();
+
+        // when moxios resolves, we should get the results
+        await waitForElement(() => getByText("0 documents"));
+
+        expect(
+          getByText(
+            "Error loading files. Please refresh the page and try again",
+          ),
+        ).toBeInTheDocument();
+      });
+    });
     describe("when no files have been uploaded yet", () => {
       it("should show 0 documents", async () => {
         moxios.stubRequest("http://localhost:3001/documents", {
@@ -67,15 +87,43 @@ describe("App", () => {
           expect(deleteButton).toBeInTheDocument();
           deleteButton.click();
 
+          expect(getByText("Loading ...")).toBeInTheDocument();
+
           // stub response
           moxios.stubRequest("http://localhost:3001/documents/1", {
             status: 200,
             response: {},
           });
-          expect(getByText("Loading ...")).toBeInTheDocument();
 
           const header = await waitForElement(() => getByText("1 documents"));
+
           expect(header).toBeInTheDocument();
+        });
+        describe("when there is an error deleting the first document", () => {
+          it("should show the error", async () => {
+            const { getByText, getAllByText } = await render(<App />);
+
+            // when moxios resolves, we should get the results
+            await waitForElement(() => getByText("2 documents"));
+            expect(getByText("2 documents")).toBeInTheDocument();
+            const deleteButton = getAllByText("Delete")[0];
+            expect(deleteButton).toBeInTheDocument();
+            deleteButton.click();
+
+            expect(getByText("Loading ...")).toBeInTheDocument();
+
+            // stub response
+            moxios.stubRequest("http://localhost:3001/documents/1", {
+              status: 404,
+              response: {},
+            });
+
+            const header = await waitForElement(() => getByText("2 documents"));
+            expect(
+              getByText("Error deleting file. Please try again."),
+            ).toBeInTheDocument();
+            expect(header).toBeInTheDocument();
+          });
         });
       });
     });

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import FileUploadInput from "../file-upload-input";
+import { useStateValue } from "../../state";
 import { processFileAndGetMimetype } from "../../utils/file";
 
 const supportedFormats = ["image/jpeg", "image/png"];

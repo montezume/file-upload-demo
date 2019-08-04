@@ -13,7 +13,15 @@
 
 ## Security
 
-The app only accepts files of type `png` and `jpg`. There are two ways of determining a files mimetype on the client side. The first way is to look at the files
+The app only accepts files of type `png` and `jpg`. There are two ways of determining a files mimetype on the client side.
+
+The first way is to look at the the `File` object's `type` property. However, if you take `file.php`, and rename it to `file.png`, then the file's type property will read as `image/png`.
+
+The second way is to use a `FileReader`, and read the bytes themselves. The first 8 HEX bytes reveal the object's true nature.
+
+### Not addressed.
+
+CSRF => In order to prevent our API from being hit by bad actors, we should send a token with every request. This will prevent other sites from communicating with our API.
 
 ## Improvements
 
@@ -30,6 +38,10 @@ There are integration tests for viewing the list, and for deleting a document.
 Tests are mising for creating a document, and for searching for documents.
 
 I wanted to write a test for searching for documents. However, my implementation of a debounced search value made this difficult, and I was not able to solve this in time.
+
+The app's visuals are not great. More care and time could be put into the CSS and the design. The use of theme is a bit haphazzard and all over the place.
+
+Error handling is basic.
 
 ## Libraries
 

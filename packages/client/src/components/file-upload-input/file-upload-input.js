@@ -20,10 +20,10 @@ const Label = styled.label`
 
 const FileUploadInput = props => {
   return (
-    <React.Fragment>
+    <div>
       <Label htmlFor={props.id}>Upload</Label>
       <StyledInput {...props} accept="image/x-png,image/jpeg" />
-    </React.Fragment>
+    </div>
   );
 };
 

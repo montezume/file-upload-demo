@@ -1,18 +1,11 @@
 {
   "documents": [
     {
-      "name": "mock-image.png",
-      "size": 3805,
+      "name": "Screen Shot 2019-07-04 at 8.04.33 PM.png",
+      "size": 273839,
       "type": "image/png",
-      "blob": "blob:http://localhost:3000/60538ad3-660e-4812-99bc-04a72076fad6",
+      "blob": "blob:http://localhost:3000/76e472dc-bb53-461e-b0e6-49a1b61a7952",
       "id": 1
-    },
-    {
-      "name": "Screen Shot 2019-07-06 at 9.38.19 AM copy.png",
-      "size": 102609,
-      "type": "image/png",
-      "blob": "blob:http://localhost:3000/906c9c2a-4d7e-49d1-9daf-7d73d286ca1d",
-      "id": 3
     }
   ]
 }

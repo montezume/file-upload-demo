@@ -6,7 +6,14 @@ import { StateProvider } from "./state";
 import reducer from "./reducer";
 import * as serviceWorker from "./serviceWorker";
 
-const initialState = { files: [], isLoading: false, searchTerm: "" };
+const initialState = {
+  files: [],
+  isLoading: false,
+  searchTerm: "",
+  hasFileLoadingError: false,
+  hasFileDeletionError: false,
+  hasFileUploadError: false,
+};
 
 ReactDOM.render(
   <StateProvider initialState={initialState} reducer={reducer}>

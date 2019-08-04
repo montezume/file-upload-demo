@@ -6,6 +6,7 @@ const Input = styled.input`
   border-radius: ${props => props.theme.borderRadius};
   border: 1px solid ${props => props.theme.colorSolid};
   font-size: 1rem;
+  margin: ${props => props.theme.spacingS} 0;
 `;
 
 const SearchInput = props => <Input {...props} data-testid="search-input" />;

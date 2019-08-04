@@ -18,12 +18,14 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: false,
+        hasFileUploadError: false,
         files: state.files.concat(action.payload),
       };
     }
     case "CREATE_FILE_ERROR": {
       return {
         ...state,
+        hasFileUploadError: true,
         isLoading: false,
       };
     }
@@ -38,6 +40,7 @@ const reducer = (state, action) => {
     case "DELETE_FILE_SUCCESS": {
       return {
         ...state,
+        hasFileDeletionError: false,
         files: state.files.filter(file => file.id !== action.payload),
         isLoading: false,
       };
@@ -45,6 +48,7 @@ const reducer = (state, action) => {
     case "DELETE_FILE_ERROR": {
       return {
         ...state,
+        hasFileDeletionError: true,
         isLoading: false,
       };
     }
@@ -59,6 +63,7 @@ const reducer = (state, action) => {
     case "LOAD_FILES_SUCCESS": {
       return {
         ...state,
+        hasFileLoadingError: false,
         isLoading: false,
         files: action.payload,
       };
@@ -67,6 +72,7 @@ const reducer = (state, action) => {
     case "LOAD_FILES_ERROR": {
       return {
         ...state,
+        hasFileLoadingError: true,
         isLoading: false,
         files: [],
       };

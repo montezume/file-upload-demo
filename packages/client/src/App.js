@@ -54,6 +54,13 @@ const App = () => {
     [dispatch],
   );
 
+  const onClientSideFileError = React.useCallback(
+    () => {
+      dispatch({ type: "CREATE_FILE_ERROR" });
+    },
+    [dispatch],
+  );
+
   const onFileDelete = React.useCallback(
     async id => {
       dispatch({ type: "DELETE_FILE" });
@@ -90,6 +97,7 @@ const App = () => {
 
               @media (min-width: ${customTheme.breakpointDesktop}) {
                 flex-direction: row;
+                align-items: center;
               }
             `}
           >
@@ -97,8 +105,27 @@ const App = () => {
               placeholder="Search documents"
               onDebouncedValueChange={onSearchTermChange}
             />
-            <FileUpload onFileSelected={onFileSelected} />
+            <div
+              css={customTheme => css`
+                @media (min-width: ${customTheme.breakpointDesktop}) {
+                  margin-left: auto;
+                }
+              `}
+            >
+              <FileUpload
+                onFileSelected={onFileSelected}
+                onError={onClientSideFileError}
+              />
+            </div>
           </div>
+          {state.hasFileDeletionError && (
+            <div>Error deleting file. Please try again.</div>
+          )}
+
+          {state.hasFileUploadError && (
+            <div>Error uploading file. Please try again.</div>
+          )}
+
           <FileList onFileDelete={onFileDelete} />
         </div>
       </AppWrapper>

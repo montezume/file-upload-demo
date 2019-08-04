@@ -29,7 +29,7 @@ const H3 = styled.h3`
 `;
 
 const FileList = props => {
-  const [{ files, isLoading }] = useStateValue();
+  const [{ files, isLoading, hasFileLoadingError }] = useStateValue();
   const numDocuments = files.length || 0;
   const totalSize =
     files && files.reduce((acc, currentValue) => currentValue.size + acc, 0);
@@ -43,7 +43,11 @@ const FileList = props => {
         <p>Total size: {formatBytes(totalSize)} </p>
       </Header>
       <FileContainer>
-        {files &&
+        {hasFileLoadingError && (
+          <div>Error loading files. Please refresh the page and try again</div>
+        )}
+        {!hasFileLoadingError &&
+          files &&
           files.map((file, i) => {
             return (
               <Item key={file.id}>
