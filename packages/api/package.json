@@ -1,14 +1,14 @@
 {
-  "name": "api",
-  "version": "1.0.0",
-  "description": "TODO",
+  "name": "@file-upload-demo/api",
+  "version": "0.0.1",
+  "description": "JSON Server based API server",
   "main": "index.js",
   "scripts": {
     "start": "json-server --watch ./db.json --port 3001",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Malcolm Laing",
+  "license": "MIT",
   "dependencies": {
     "json-server": "^0.15.0"
   }

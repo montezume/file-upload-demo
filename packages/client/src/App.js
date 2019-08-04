@@ -2,6 +2,7 @@
 import React from "react";
 import { css, jsx } from "@emotion/core";
 import { ThemeProvider } from "emotion-theming";
+import axios from "axios";
 import Search from "./components/search";
 import FileUpload from "./components/file-upload";
 import FileList from "./components/file-list";
@@ -18,11 +19,11 @@ const App = () => {
 
       try {
         const queryParam = state.searchTerm ? `?q=${state.searchTerm}` : "";
-        const blah = await fetch(
+        const response = await axios.get(
           `http://localhost:3001/documents${queryParam}`,
         );
-        const files = await blah.json();
-        dispatch({ type: "LOAD_FILES_SUCCESS", payload: files });
+
+        dispatch({ type: "LOAD_FILES_SUCCESS", payload: response.data });
       } catch (e) {
         dispatch({ type: "LOAD_FILES_ERROR" });
       }
@@ -31,7 +32,7 @@ const App = () => {
   );
 
   const onSearchTermChange = React.useCallback(
-    async searchTerm => {
+    searchTerm => {
       dispatch({ type: "SET_SEARCH_TERM", payload: searchTerm });
     },
     [dispatch],
@@ -41,15 +42,11 @@ const App = () => {
     async data => {
       dispatch({ type: "CREATE_FILE" });
       try {
-        const rawResponse = await fetch("http://localhost:3001/documents", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        const content = await rawResponse.json();
+        const response = await axios.post(
+          "http://localhost:3001/documents",
+          data,
+        );
+        const content = response.data;
         dispatch({ type: "CREATE_FILE_SUCCESS", payload: content });
       } catch (e) {
         dispatch({ type: "CREATE_FILE_ERROR" });
@@ -62,16 +59,9 @@ const App = () => {
     async id => {
       dispatch({ type: "DELETE_FILE" });
       try {
-        const rawResponse = await fetch(
-          `http://localhost:3001/documents/${id}11`,
-          {
-            method: "DELETE",
-          },
-        );
-        const content = await rawResponse.json();
+        await axios.delete(`http://localhost:3001/documents/${id}11111`);
         dispatch({ type: "DELETE_FILE_SUCCESS", payload: id });
       } catch (e) {
-        console.log("here", e);
         dispatch({ type: "DELETE_FILE_ERROR" });
       }
     },

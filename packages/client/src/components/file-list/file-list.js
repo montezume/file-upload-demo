@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
+import Loader from "../loader";
 import { useStateValue } from "../../state";
 import File from "../file";
 
@@ -18,8 +19,10 @@ const Item = styled.div`
 `;
 
 const FileList = props => {
-  const [{ files }] = useStateValue();
+  const [{ files, isLoading }] = useStateValue();
   const numDocuments = files.length || 0;
+
+  if (isLoading) return <Loader />;
 
   return (
     <div>
