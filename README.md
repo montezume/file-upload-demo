@@ -19,6 +19,8 @@ The first way is to look at the the `File` object's `type` property. However, if
 
 The second way is to use a `FileReader`, and read the bytes themselves. The first 8 HEX bytes reveal the object's true nature.
 
+XSS -> if a user uploads a file with a `name` that contains malicious JavaScript code, it won't run on the browser, due to React's safe parsing of the children property. See [here](https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412) for more info.
+
 ### Not addressed.
 
 CSRF => In order to prevent our API from being hit by bad actors, we should send a token with every request. This will prevent other sites from communicating with our API.
