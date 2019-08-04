@@ -11,13 +11,14 @@ const FileContainer = styled.div`
 
 const Item = styled.div`
   width: 100%;
+
   @media (min-width: ${props => props.theme.breakpointDesktop}) {
-    width: 33%;
+    width: 33.33%;
   }
 `;
 
 const FileList = props => {
-  const [{ files }, dispatch] = useStateValue();
+  const [{ files }] = useStateValue();
   const numDocuments = files.length || 0;
 
   return (

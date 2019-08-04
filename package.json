@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "yarn --cwd packages/client start",
+    "start-client": "yarn --cwd packages/client start",
+    "start-api": "yarn --cwd packages/api start",
+    "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
     "test": "yarn --cwd packages/client test"
   },
   "private": true,
@@ -12,5 +14,8 @@
     "packages/*"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^4.1.1"
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "documents": [
+    {
+      "name": "mock-image.png",
+      "size": 3805,
+      "type": "image/png",
+      "blob": "blob:http://localhost:3000/537966f6-73cb-4761-8377-e37ef5370740",
+      "id": 1
+    }
+  ]
+}

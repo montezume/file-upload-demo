@@ -8,7 +8,6 @@ import FileList from "./components/file-list";
 import AppWrapper from "./components/app-wrapper";
 import { useStateValue } from "./state";
 import theme from "./theme";
-import { create, list, remove } from "./fakeApi";
 
 const App = () => {
   const [state, dispatch] = useStateValue();
@@ -18,8 +17,12 @@ const App = () => {
       dispatch({ type: "LOAD_FILES" });
 
       try {
-        const result = await list(state.searchTerm);
-        dispatch({ type: "LOAD_FILES_SUCCESS", payload: result });
+        const queryParam = state.searchTerm ? `?q=${state.searchTerm}` : "";
+        const blah = await fetch(
+          `http://localhost:3001/documents${queryParam}`,
+        );
+        const files = await blah.json();
+        dispatch({ type: "LOAD_FILES_SUCCESS", payload: files });
       } catch (e) {
         dispatch({ type: "LOAD_FILES_ERROR" });
       }
@@ -30,18 +33,24 @@ const App = () => {
   const onSearchTermChange = React.useCallback(
     async searchTerm => {
       dispatch({ type: "SET_SEARCH_TERM", payload: searchTerm });
-      fetchData();
     },
-    [dispatch, fetchData],
+    [dispatch],
   );
 
   const onFileSelected = React.useCallback(
     async data => {
-      console.log("here on fileSelected", data);
       dispatch({ type: "CREATE_FILE" });
       try {
-        const file = await create(data);
-        dispatch({ type: "CREATE_FILE_SUCCESS", payload: file });
+        const rawResponse = await fetch("http://localhost:3001/documents", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const content = await rawResponse.json();
+        dispatch({ type: "CREATE_FILE_SUCCESS", payload: content });
       } catch (e) {
         dispatch({ type: "CREATE_FILE_ERROR" });
       }
@@ -53,19 +62,26 @@ const App = () => {
     async id => {
       dispatch({ type: "DELETE_FILE" });
       try {
-        await remove(id);
+        const rawResponse = await fetch(
+          `http://localhost:3001/documents/${id}11`,
+          {
+            method: "DELETE",
+          },
+        );
+        const content = await rawResponse.json();
         dispatch({ type: "DELETE_FILE_SUCCESS", payload: id });
       } catch (e) {
+        console.log("here", e);
         dispatch({ type: "DELETE_FILE_ERROR" });
       }
     },
     [dispatch],
   );
 
-  // runs on mount
+  // runs on mount and searchTerm change
   React.useEffect(
     () => {
-      fetchData();
+      fetchData(state.searchTerm);
     },
     [dispatch, fetchData, state.searchTerm],
   );
@@ -75,22 +91,27 @@ const App = () => {
       <AppWrapper>
         <div
           css={customTheme => css`
-            display: flex;
-            flex-direction: column;
-
-            @media (min-width: ${customTheme.breakpointDesktop}) {
-              flex-direction: row;
-              margin: 0 ${customTheme.spacingS};
-            }
+            margin: 0 ${customTheme.spacingM};
           `}
         >
-          <Search
-            placeholder="Search documents"
-            onDebouncedValueChange={onSearchTermChange}
-          />
-          <FileUpload onFileSelected={onFileSelected} />
+          <div
+            css={customTheme => css`
+              display: flex;
+              flex-direction: column;
+
+              @media (min-width: ${customTheme.breakpointDesktop}) {
+                flex-direction: row;
+              }
+            `}
+          >
+            <Search
+              placeholder="Search documents"
+              onDebouncedValueChange={onSearchTermChange}
+            />
+            <FileUpload onFileSelected={onFileSelected} />
+          </div>
+          <FileList onFileDelete={onFileDelete} />
         </div>
-        <FileList onFileDelete={onFileDelete} />
       </AppWrapper>
     </ThemeProvider>
   );
