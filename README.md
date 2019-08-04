@@ -21,7 +21,7 @@ The second way is to use a `FileReader`, and read the bytes themselves. The firs
 
 XSS -> if a user uploads a file with a `name` that contains malicious JavaScript code, it won't run on the browser, due to React's safe parsing of the children property. See [here](https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412) for more info.
 
-Some basic security headers have been added including `content-security-policy` and `x-xss-protection`
+Some basic security headers have been added including `content-security-policy` and `x-xss-protection` and `X-Content-Type-Option`.
 
 ### Not addressed.
 
@@ -45,7 +45,7 @@ I wanted to write a test for searching for documents. However, my implementation
 
 The app's visuals are not great. More care and time could be put into the CSS and the design. The use of theme is a bit haphazzard and all over the place.
 
-Error handling is basic.
+Error handling is basic and could be improved.
 
 ## Libraries
 
