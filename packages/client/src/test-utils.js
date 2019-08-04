@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import React from "react";
 import { render } from "@testing-library/react";
 import { StateProvider } from "./state";
@@ -15,8 +14,6 @@ const customRender = (node, { ...rtlOptions } = {}) => ({
   ),
 });
 
-// re-export everything
 export * from "@testing-library/react";
 
-// override render method
 export { customRender as render };
