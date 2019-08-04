@@ -8,7 +8,7 @@ const Input = styled.input`
   font-size: 1rem;
 `;
 
-const SearchInput = props => <Input {...props} />;
+const SearchInput = props => <Input {...props} data-testid="search-input" />;
 
 SearchInput.isEmpty = value => !value || value.trim().length === 0;
 

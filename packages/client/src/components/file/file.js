@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
+import { formatBytes } from "../../utils/file";
 
 const Button = styled.button`
   border: 1px solid ${props => props.theme.colorSolid};
@@ -43,7 +44,7 @@ const File = props => {
     <Wrapper>
       <BodyContainer>
         <p>{props.name}</p>
-        <p>{props.size}</p>
+        <p>{formatBytes(props.size)}</p>
       </BodyContainer>
       <ButtonContainer>
         <Button onClick={handleDelete}>Delete</Button>

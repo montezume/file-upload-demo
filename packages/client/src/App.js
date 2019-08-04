@@ -22,7 +22,6 @@ const App = () => {
         const response = await axios.get(
           `http://localhost:3001/documents${queryParam}`,
         );
-
         dispatch({ type: "LOAD_FILES_SUCCESS", payload: response.data });
       } catch (e) {
         dispatch({ type: "LOAD_FILES_ERROR" });
@@ -59,7 +58,7 @@ const App = () => {
     async id => {
       dispatch({ type: "DELETE_FILE" });
       try {
-        await axios.delete(`http://localhost:3001/documents/${id}11111`);
+        await axios.delete(`http://localhost:3001/documents/${id}`);
         dispatch({ type: "DELETE_FILE_SUCCESS", payload: id });
       } catch (e) {
         dispatch({ type: "DELETE_FILE_ERROR" });

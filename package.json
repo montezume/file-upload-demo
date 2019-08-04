@@ -7,7 +7,7 @@
     "start-client": "yarn --cwd packages/client start",
     "start-api": "yarn --cwd packages/api start",
     "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
-    "test": "yarn --cwd packages/client test"
+    "test": "yarn --cwd packages/client test --no-cache"
   },
   "private": true,
   "workspaces": [

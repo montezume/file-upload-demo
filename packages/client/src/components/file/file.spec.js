@@ -13,7 +13,7 @@ describe("File", () => {
     const props = createBaseProps();
     const { getByText } = render(<File {...props} />);
     expect(getByText("Foo")).toBeInTheDocument();
-    expect(getByText("1000")).toBeInTheDocument();
+    expect(getByText("1000 Bytes")).toBeInTheDocument();
   });
   describe("callbacks", () => {
     it("should call `onFileDelete` with the id", () => {

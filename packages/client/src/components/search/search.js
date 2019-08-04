@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import SearchInput from "../search-input";
 import useDebounce from "./use-debounce";
 
-// const fakeApi = searchTerm =>
-//   new Promise(resolve => setTimeout(() => resolve(searchTerm), 500));
-
 const Search = props => {
   const { onDebouncedValueChange } = props;
   const [value, setValue] = React.useState("");

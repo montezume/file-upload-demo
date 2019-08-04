@@ -45,7 +45,6 @@ describe("FileUpload", () => {
         expect.objectContaining({
           name: "foo.jpg",
           size: 1000000,
-          blob: "foo.jpg",
           type: "image/jpeg",
         }),
       );

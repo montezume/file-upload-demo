@@ -35,7 +35,7 @@ describe("FileUpload", () => {
         </StateContext.Provider>,
       );
       expect(getByText("foo.jpg")).toBeInTheDocument();
-      expect(getByText("10000")).toBeInTheDocument();
+      expect(getByText("9.77 KB")).toBeInTheDocument();
     });
   });
 });

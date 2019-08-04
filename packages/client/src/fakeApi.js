@@ -22,9 +22,7 @@ export const remove = async id => {
 
 export const create = async data => {
   await timeout(600);
-  console.log("here");
   const file = createFile(data);
-  console.log("here", file);
   files = files.concat(file);
   return file;
 };

@@ -1,7 +1,6 @@
 import React from "react";
 import moxios from "moxios";
 import { render, waitForElement } from "./test-utils";
-// import { StateContext } from "./state";
 import App from "./App";
 
 const createDocument = custom => ({
@@ -12,14 +11,15 @@ const createDocument = custom => ({
   ...custom,
 });
 
+// these are "integration" tests
+// we don't test the internals, but we test the behaviour
+// we mock as little as possible (only API calls)
 describe("App", () => {
   beforeEach(function() {
-    // import and pass your custom axios instance to this method
     moxios.install();
   });
 
   afterEach(function() {
-    // import and pass your custom axios instance to this method
     moxios.uninstall();
   });
 
@@ -41,12 +41,13 @@ describe("App", () => {
       });
     });
     describe("when 2 files have been uploaded", () => {
-      it("should show 2 documents", async () => {
+      beforeEach(() => {
         moxios.stubRequest("http://localhost:3001/documents", {
           status: 200,
           response: [createDocument(), createDocument({ id: 2 })],
         });
-
+      });
+      it("should show 2 documents", async () => {
         const { getByText } = await render(<App />);
         // when first rendered, it should show loader
         expect(getByText("Loading ...")).toBeInTheDocument();
@@ -54,6 +55,28 @@ describe("App", () => {
         // when moxios resolves, we should get the results
         await waitForElement(() => getByText("2 documents"));
         expect(getByText("2 documents")).toBeInTheDocument();
+      });
+      describe("when you click to delete the first document", () => {
+        it("should delete the document", async () => {
+          const { getByText, getAllByText } = await render(<App />);
+
+          // when moxios resolves, we should get the results
+          await waitForElement(() => getByText("2 documents"));
+          expect(getByText("2 documents")).toBeInTheDocument();
+          const deleteButton = getAllByText("Delete")[0];
+          expect(deleteButton).toBeInTheDocument();
+          deleteButton.click();
+
+          // stub response
+          moxios.stubRequest("http://localhost:3001/documents/1", {
+            status: 200,
+            response: {},
+          });
+          expect(getByText("Loading ...")).toBeInTheDocument();
+
+          const header = await waitForElement(() => getByText("1 documents"));
+          expect(header).toBeInTheDocument();
+        });
       });
     });
   });
